@@ -144,7 +144,6 @@ window.ClipsDescendants=true
 window.Parent=gui
 inst("UIStroke",{Color=Color3.fromRGB(45,45,45),Thickness=1,Parent=window})
 local grad=inst("Frame",{BackgroundColor3=Color3.fromRGB(30,30,30),BorderSizePixel=0,Size=UDim2.new(1,0,0,2),Parent=window})
-grad.UIGradient and grad.UIGradient:Destroy()
 inst("UIGradient",{Color=ColorSequence.new({
 ColorSequenceKeypoint.new(0,Color3.fromRGB(124,60,255)),
 ColorSequenceKeypoint.new(0.25,Color3.fromRGB(255,60,166)),
@@ -152,8 +151,7 @@ ColorSequenceKeypoint.new(0.5,Color3.fromRGB(255,122,60)),
 ColorSequenceKeypoint.new(0.75,Color3.fromRGB(255,210,60)),
 ColorSequenceKeypoint.new(1,Color3.fromRGB(163,255,60))
 }),Parent=grad})
-local side=inst("Frame",{BackgroundColor3=T.side,BorderSizePixel=0,Size=UDim2.fromOffset(90,1,0),Parent=window})
-side.Size=UDim2.new(0,90,1,0)
+local side=inst("Frame",{BackgroundColor3=T.side,BorderSizePixel=0,Size=UDim2.new(0,90,1,0),Parent=window})
 inst("Frame",{BackgroundColor3=T.border,BorderSizePixel=0,Position=UDim2.fromOffset(90,0),Size=UDim2.new(0,1,1,0),Parent=window})
 local topbox=inst("TextButton",{AutoButtonColor=false,BackgroundColor3=Color3.fromRGB(28,28,28),Size=UDim2.fromOffset(90,90),Text="",Parent=side})
 inst("UIStroke",{Color=T.border,Parent=topbox})
@@ -254,10 +252,17 @@ vlab.Text=tostring(val)..(o.suffix or "")
 vlab.Position=UDim2.fromOffset(w*r,5)
 end
 local dr=false
-local function fromX(x) set((x-track.AbsolutePosition.X)/w) end
-grab.MouseButton1Down:Connect(function(x) dr=true fromX(x) end)
+local function fromX(x)
+set((x-track.AbsolutePosition.X)/w)
+end
+grab.MouseButton1Down:Connect(function(x)
+dr=true
+fromX(x)
+end)
 UIS.InputChanged:Connect(function(inp)
-if dr and inp.UserInputType==Enum.UserInputType.MouseMovement then fromX(inp.Position.X) end
+if dr and inp.UserInputType==Enum.UserInputType.MouseMovement then
+fromX(inp.Position.X)
+end
 end)
 UIS.InputEnded:Connect(function(inp)
 if inp.UserInputType==Enum.UserInputType.MouseButton1 then dr=false end
@@ -345,10 +350,15 @@ checkbox(gAO,{id="ao_onshot",text="On shot anti-aim",bind="[-]",yellow=true})
 checkbox(gAO,{id="ao_fakepeek",text="Fake peek",bind="[X]",yellow=true})
 local sideBtns={}
 local topIcon=nil
+local current=nil
 local function setTab(id)
 if openList then openList() end
-for _,tid in ipairs(tabOrder) do pages[tid].Visible=(tid==id) end
-for tid,b in pairs(sideBtns) do b.BackgroundColor3=(tid==id) and Color3.fromRGB(28,28,28) or T.side end
+for _,tid in ipairs(tabOrder) do
+pages[tid].Visible=(tid==id)
+end
+for tid,b in pairs(sideBtns) do
+b.BackgroundColor3=(tid==id) and Color3.fromRGB(28,28,28) or T.side
+end
 if topIcon then topIcon:Destroy() end
 topIcon=icon(iconKind[id],topbox)
 topIcon.Position=UDim2.new(0.5,-14,0.5,-14)
@@ -359,10 +369,14 @@ local id=tabOrder[i]
 local b=inst("TextButton",{AutoButtonColor=false,BackgroundColor3=T.side,Size=UDim2.fromOffset(90,74),Position=UDim2.fromOffset(0,94+(i-2)*74),Text="",Parent=side})
 local ic=icon(iconKind[id],b)
 ic.Position=UDim2.new(0.5,-14,0.5,-14)
-b.MouseButton1Click:Connect(function() setTab(id) end)
+b.MouseButton1Click:Connect(function()
+setTab(id)
+end)
 sideBtns[id]=b
 end
-topbox.MouseButton1Click:Connect(function() setTab("aimbot") end)
+topbox.MouseButton1Click:Connect(function()
+setTab("aimbot")
+end)
 setTab("aimbot")
 local drag=inst("TextButton",{AutoButtonColor=false,BackgroundTransparency=1,Position=UDim2.fromOffset(90,0),Size=UDim2.fromOffset(WIN_W-90,14),Text="",ZIndex=8,Parent=window})
 local dOn=false
@@ -388,7 +402,9 @@ local function hideMenu()
 if openList then openList() end
 local t=TS:Create(window,TweenInfo.new(0.2,Enum.EasingStyle.Quad,Enum.EasingDirection.In),{GroupTransparency=1})
 t:Play()
-t.Completed:Connect(function() window.Visible=false end)
+t.Completed:Connect(function()
+window.Visible=false
+end)
 end
 UIS.InputBegan:Connect(function(inp,gpe)
 if gpe then return end
