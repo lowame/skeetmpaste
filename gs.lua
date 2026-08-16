@@ -22,7 +22,7 @@ accent=Color3.fromRGB(158,200,40),
 yellow=Color3.fromRGB(200,200,90),
 white=Color3.fromRGB(235,235,235)
 }
-local F_BODY=Enum.Font.Verdana
+local F_BODY=Enum.Font.RobotoCondensed
 local F_BOLD=Enum.Font.ArialBold
 local settings={}
 local openList=nil
