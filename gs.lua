@@ -43,12 +43,11 @@ local palette = {
 
 local FONT = Enum.Font.Code
 
-local function new(class, props)
-    local inst = Instance.new(class)
-    for key, value in pairs(props) do
-        inst[key] = value
-    end
-    return inst
+local function tween(obj, duration, props, style, direction)
+    local info = TweenInfo.new(duration, style or Enum.EasingStyle.Quart, direction or Enum.EasingDirection.Out)
+    local tw = tweenService:Create(obj, info, props)
+    tw:Play()
+    return tw
 end
 
 local function tween(obj, duration, props, style, direction)
